@@ -3,7 +3,7 @@ const User = require("./model");
 exports.getUsers = (query) => {
   //   -> add pagination
   const { page = 1, limit = 10 } = query;
-  const offset = (page - 1) * offset;
+  const offset = (page - 1) * limit;
 
   // -> filter by gender
   const filter = {};

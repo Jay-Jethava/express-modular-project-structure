@@ -8,6 +8,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
-app.use("/api/users", require("./modules/users/index"));
+app.use("/api/v1/users", require("./modules/users/index"));
 
 module.exports = app;

@@ -20,19 +20,19 @@ const config = {
     dialectOptions: {
       ssl: {
         require: true,
-        rejectUnauthorized: false,
+        rejectUnauthorized: true, // Validates the SSL certificate
       },
-      connectionTimeoutMillis: 5000,
-      idleTimeoutMillis: 30000,
-      requestTimeoutMillis: 15000,
+      connectTimeout: 10000,
+      // connectionTimeoutMillis: 0.001, // PostgreSQL
+      // requestTimeoutMillis: 15000, // PostgreSQL
     },
     pool: {
-      max: 250,
+      max: 10,
       min: 0,
       acquire: 30000,
-      idle: 10000,
+      idle: 10000, // soft limit
       evict: 10000,
-      maxIdleTime: 60000,
+      // maxIdleTime: 10000, // hard limit
       handleDisconnects: true,
     },
   },

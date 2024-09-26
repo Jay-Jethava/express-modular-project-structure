@@ -28,6 +28,6 @@ exports.getAllUsers = async (req, res, next) => {
       },
     });
   } catch (err) {
-    console.error(err); // I will add error handling
+    console.error(err);
   }
 };

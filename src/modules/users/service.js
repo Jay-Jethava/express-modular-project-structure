@@ -25,4 +25,9 @@ exports.createUser = (userData) => {
   return User.create(userData);
 };
 
+exports.updateUser = async (data, filter) => {
+  const result = await User.update(data, filter);
+  return result;
+};
+
 // < define other services like update, delete, etc >

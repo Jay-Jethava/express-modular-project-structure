@@ -31,3 +31,24 @@ exports.getAllUsers = async (req, res, next) => {
     console.error(err);
   }
 };
+
+exports.updateById = async (req, res, next) => {
+  try {
+    const affected = await userService.updateUser(req.body, {
+      where: {
+        id: req.params.id,
+      },
+      // returning: true, // PostgreSQL
+      individualHooks: true,
+    });
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        affected,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};

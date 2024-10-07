@@ -1,6 +1,8 @@
 const { DataTypes } = require("sequelize");
 const CryptoJS = require("crypto-js");
 const sequelize = require("../../utils/db"); // Import the database connection
+const { validatePayload } = require("../../utils");
+const userJoiSchema = require("./joiSchema");
 
 const User = sequelize.define(
   "user",
@@ -39,15 +41,21 @@ const User = sequelize.define(
     paranoid: true,
     hooks: {
       // Hook to hash the password before creating, save the user
-      beforeSave: (user, options) => {
-        if (user._changed.has("password"))
-          user.password = User.hashPassword(user.password);
-      },
+      beforeSave: (instance, options) => {
+        console.log(instance, options);
+        if (instance._changed.has("password"))
+          instance.password = User.hashPassword(instance.password);
 
-      // Hook to hash the password before updating the user
-      beforeBulkUpdate: (user, options) => {
-        if (user._changed.has("password"))
-          user.password = User.hashPassword(user.password);
+        // validate payload
+        if (instance._options.isNewRecord)
+          validatePayload(instance.dataValues, userJoiSchema.create);
+        else {
+          const payload = {};
+          options.fields.forEach((field) => {
+            payload[field] = instance.get(field);
+          });
+          validatePayload(payload, userJoiSchema.update);
+        }
       },
     },
   }

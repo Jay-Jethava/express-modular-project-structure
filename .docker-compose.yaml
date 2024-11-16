@@ -1,0 +1,58 @@
+version: "3.8"
+
+serviceis:
+  mysql:
+    container_name: mysql
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD: rootpassword
+      - MYSQL_DATABASE: test
+      - MYSQL_USER: test
+      - MYSQL_PASSWORD: test
+    ports:
+      - "3306": "3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    # networks:
+    #   - main-network
+
+  node-app:
+    container_name: node-app
+    build:
+      context: .
+    # environment:
+    #   NODE_ENV: development
+    #   PORT: 3000
+    #   USERNAME: test
+    #   PASSWORD: test
+    #   DATABASE: test
+    #   HOST: mysql
+    ports:
+      - "3000": "3000"
+    # networks:
+    #   - main-network
+    depends_on:
+      - mysql
+    restart: always
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "root",
+          "-p${MYSQL_ROOT_PASSWORD}",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  mysql-data:
+
+networks:
+  main-network:

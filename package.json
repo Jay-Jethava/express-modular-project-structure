@@ -1,12 +1,18 @@
 {
-  "name": "modular-project-structure",
+  "name": "express-modular-project-structure",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./src/server.js",
-    "dev": "nodemon ./src/server.js"
+    "dev": "nodemon ./src/server.js",
+    "migrate:dev": "NODE_ENV=development npx sequelize-cli db:migrate",
+    "migrate:staging": "NODE_ENV=staging npx sequelize-cli db:migrate",
+    "migrate:prod": "NODE_ENV=production npx sequelize-cli db:migrate",
+    "migration:undo": "npx sequelize-cli db:migrate:undo",
+    "migration:undo:all": "npx sequelize-cli db:migrate:undo:all",
+    "migration:create": "npx sequelize-cli migration:generate --name"
   },
   "author": "",
   "license": "ISC",
